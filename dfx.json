@@ -1,0 +1,29 @@
+{
+  "canisters": {
+    "interac_ic_backend": {
+      "main": "src/interac_ic_backend/main.mo",
+      "type": "motoko"
+    },
+    "interac_ic_frontend": {
+      "dependencies": [
+        "interac_ic_backend"
+      ],
+      "frontend": {
+        "entrypoint": "src/interac_ic_frontend/src/index.html"
+      },
+      "source": [
+        "src/interac_ic_frontend/assets",
+        "dist/interac_ic_frontend/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}
