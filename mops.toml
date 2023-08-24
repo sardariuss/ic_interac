@@ -1,0 +1,6 @@
+[dependencies]
+base = "0.8.8"
+map = "8.1.0"
+stablebuffer = "https://github.com/canscale/StableBuffer#v1.2.0"
+test = "1.0.1"
+fuzz = "0.1.0"

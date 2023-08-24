@@ -1,19 +1,19 @@
 {
   "canisters": {
-    "interac_ic_backend": {
-      "main": "src/interac_ic_backend/main.mo",
+    "interac": {
+      "main": "src/backend/main.mo",
       "type": "motoko"
     },
-    "interac_ic_frontend": {
+    "frontend": {
       "dependencies": [
-        "interac_ic_backend"
+        "backend"
       ],
       "frontend": {
-        "entrypoint": "src/interac_ic_frontend/src/index.html"
+        "entrypoint": "src/frontend/src/index.html"
       },
       "source": [
-        "src/interac_ic_frontend/assets",
-        "dist/interac_ic_frontend/"
+        "src/frontend/assets",
+        "dist/frontend/"
       ],
       "type": "assets"
     }
@@ -21,7 +21,7 @@
   "defaults": {
     "build": {
       "args": "",
-      "packtool": ""
+      "packtool": "mops sources"
     }
   },
   "output_env_file": ".env",
