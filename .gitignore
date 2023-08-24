@@ -21,4 +21,4 @@ dist/
 .env
 
 # mops
-.mops
+.mops/
