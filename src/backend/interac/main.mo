@@ -4,8 +4,11 @@ import Controller  "Controller";
 import Map         "mo:map/Map";
 
 import Principal   "mo:base/Principal";
+import Time        "mo:base/Time";
 
-actor {
+import Token       "canister:token";
+
+shared actor class Interac() = this {
 
   type Interac  = Types.Interac;
   type Register = Types.Register;
@@ -15,18 +18,18 @@ actor {
     var idx = 0;
   };
 
-  let _controller = Controller.Controller(_register);
+  let _controller = Controller.Controller(_register, Token);
 
   public shared({caller}) func send(receiver: Principal, amount: Nat, question: Text, answer: Text) : async() {
-    await* _controller.send(caller, receiver, amount, question, answer);
+    await* _controller.send(Time.now(), Principal.fromActor(this), caller, receiver, amount, question, answer);
   };
 
   public shared({caller}) func redeem(id: Nat) : async() {
-    await* _controller.redeem(caller, id);
+    await* _controller.redeem(Time.now(), Principal.fromActor(this), caller, id);
   };
 
   public shared({caller}) func claim(id: Nat, answer: Text) : async() {
-    await* _controller.claim(caller, id, answer);
+    await* _controller.claim(Time.now(), Principal.fromActor(this), caller, id, answer);
   };
 
   public query({caller}) func getRedeemables() : async [Interac] {
