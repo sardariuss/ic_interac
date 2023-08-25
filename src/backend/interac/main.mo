@@ -8,10 +8,13 @@ import Time        "mo:base/Time";
 
 import Token       "canister:token";
 
-shared actor class Interac() = this {
+shared actor class Interac() = _this {
 
-  type Interac  = Types.Interac;
-  type Register = Types.Register;
+  type Interac      = Types.Interac;
+  type Register     = Types.Register;
+  type SendResult   = Types.SendResult;
+  type RedeemResult = Types.RedeemResult;
+  type ClaimResult  = Types.ClaimResult;
 
   stable let _register = {
     interacs = Map.new<Nat, Interac>(Map.nhash);
@@ -20,16 +23,20 @@ shared actor class Interac() = this {
 
   let _controller = Controller.Controller(_register, Token);
 
-  public shared({caller}) func send(receiver: Principal, amount: Nat, question: Text, answer: Text) : async() {
-    await* _controller.send(Time.now(), Principal.fromActor(this), caller, receiver, amount, question, answer);
+  public shared func init() : async () {
+    await* _controller.init(Principal.fromActor(_this));
   };
 
-  public shared({caller}) func redeem(id: Nat) : async() {
-    await* _controller.redeem(Time.now(), Principal.fromActor(this), caller, id);
+  public shared({caller}) func send(receiver: Principal, amount: Nat, question: Text, answer: Text) : async SendResult {
+    await* _controller.send(Time.now(), caller, receiver, amount, question, answer);
   };
 
-  public shared({caller}) func claim(id: Nat, answer: Text) : async() {
-    await* _controller.claim(Time.now(), Principal.fromActor(this), caller, id, answer);
+  public shared({caller}) func redeem(id: Nat) : async RedeemResult {
+    await* _controller.redeem(Time.now(), caller, id);
+  };
+
+  public shared({caller}) func claim(id: Nat, answer: Text) : async ClaimResult {
+    await* _controller.claim(Time.now(), caller, id, answer);
   };
 
   public query({caller}) func getRedeemables() : async [Interac] {

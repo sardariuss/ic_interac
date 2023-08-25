@@ -126,7 +126,7 @@ module {
       _expected_calls.add(args);
     };
 
-    public func hasUnconsumedCalls() : async Bool {
+    public func hasExpectedCalls() : async Bool {
       return _expected_calls.size() > 0;
     };
     

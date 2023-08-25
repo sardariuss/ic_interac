@@ -7,10 +7,11 @@ import Map              "mo:map/Map";
 import Fuzz             "mo:fuzz";
 import Iter             "mo:base/Iter";
 import Buffer           "mo:base/Buffer";
+import Result           "mo:base/Result";
 
-await suite("Controller suite", func(): async () {
+await suite("Controller test suite", func(): async () {
   
-  await test("Basic interac flow", func(): async () {
+  await test("Nominal interac flow", func(): async () {
 
     type Interac = Types.Interac;
     type Fuzzer  = Fuzz.Fuzzer;
@@ -25,7 +26,12 @@ await suite("Controller suite", func(): async () {
     let interac_canister = fuzz.principal.randomPrincipal(10);
     let sender = fuzz.principal.randomPrincipal(10);
     let receivers = Buffer.Buffer<Principal>(10);
+    let fee = 10_000;
     let time = 0;
+
+    // Need to initialize the controller
+    icrc2.expectCall(#icrc1_fee(fee));
+    await* controller.init(interac_canister);
     
     // Send 10 interacs
     for (i in Iter.range(0, 9)) {
@@ -36,7 +42,7 @@ await suite("Controller suite", func(): async () {
       let password = fuzz.text.randomAlphanumeric(20);
       // Configure the call to the ledger
       icrc2.expectCall(#icrc2_transfer_from(#Ok(0)));
-      await* controller.send(time, interac_canister, sender, receiver, amount, question, password);
+      assert(Result.isOk(await* controller.send(time, sender, receiver, amount, question, password)));
     };
 
     // Check that the sender has 10 redeemables
@@ -48,12 +54,13 @@ await suite("Controller suite", func(): async () {
       let redeemable = redeemables.get(i);
       // Configure the call to the ledger
       icrc2.expectCall(#icrc1_transfer(#Ok(0)));
-      await* controller.redeem(time, interac_canister, sender, redeemable.id);
+      assert(Result.isOk(await* controller.redeem(time, sender, redeemable.id)));
     };
 
+    // Check that the sender has only 5 redeemables left
     assert controller.getRedeemables(sender).size() == 5;
 
-    // Claim the last 5
+    // Claim the last 5 interacs from the receivers
     for (i in Iter.range(0, receivers.size() - 1)){
       let receiver = receivers.get(i);
       let claimables = controller.getClaimables(receiver);
@@ -65,10 +72,14 @@ await suite("Controller suite", func(): async () {
         assert interac.receiver == receiver;
         // Configure the call to the ledger
         icrc2.expectCall(#icrc1_transfer(#Ok(0)));
-        await* controller.claim(time, interac_canister, receiver, interac.id, interac.answer);
+        assert(Result.isOk(await* controller.claim(time, receiver, interac.id, interac.answer)));
       };
     };
 
-    assert not (await icrc2.hasUnconsumedCalls());
+    // Check that the sender has no redeemable left
+    assert controller.getRedeemables(sender).size() == 0;
+
+    // Checkk that no expected calls are left
+    assert not (await icrc2.hasExpectedCalls());
   });
 });
