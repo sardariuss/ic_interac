@@ -11,17 +11,17 @@ import ICRC2     "mo:icrc2/ICRC2";
 
 module {
 
-  type Register       = Types.Register;
-  type Interac        = Types.Interac;
-  type SendResult     = Types.SendResult;
-  type RedeemResult   = Types.RedeemResult;
-  type ClaimResult    = Types.ClaimResult;
+  type Register          = Types.Register;
+  type Interac           = Types.Interac;
+  type SendResult        = Types.SendResult;
+  type RedeemResult      = Types.RedeemResult;
+  type ClaimResult       = Types.ClaimResult;
   type CanisterCallError = Types.CanisterCallError;
-  type ICRC2Interface = ICRC2.FullInterface;
-  type Balance        = ICRC2.Balance;
-  type Map<K, V>      = Map.Map<K, V>;
-  type Time           = Int;
-  type Error          = Error.Error;
+  type ICRC2Interface    = ICRC2.FullInterface;
+  type Balance           = ICRC2.Balance;
+  type Map<K, V>         = Map.Map<K, V>;
+  type Time              = Int;
+  type Error             = Error.Error;
 
   public type Parameters = {
     transfer_fee: Balance;
@@ -63,8 +63,8 @@ module {
       let subaccount = Utils.getSubaccount(_register.idx);
 
       // Need to increment the index before performing the transfer
-      // otherwise there is a risk that during the async, another call
-      // to send will be made and the same index will be used twice
+      // otherwise there is a risk that during the async call, another 
+      // send will be made and the same index will be used twice
       _register.idx += 1;
 
       // Transfer the money from the sender to the interac subaccount
