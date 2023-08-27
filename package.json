@@ -1,48 +1,49 @@
 {
-  "name": "interac_ic_frontend",
-  "version": "0.2.0",
-  "description": "Internet Computer starter application",
-  "keywords": [
-    "Internet Computer",
-    "Motoko",
-    "JavaScript",
-    "Canister"
-  ],
+  "name": "interac-ic",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "scripts": {
-    "build": "webpack",
-    "prebuild": "dfx generate",
-    "start": "webpack serve --mode development --env development",
-    "deploy:local": "dfx deploy --network=local",
-    "deploy:ic": "dfx deploy --network=ic",
-    "generate": "dfx generate interac_ic_backend"
+    "setup": "npm i && dfx canister create backend && dfx generate backend && dfx deploy",
+    "start": "run-p frontend backend",
+    "frontend": "vite --port 3000",
+    "backend": "mo-dev --generate --deploy -y",
+    "build": "tsc && vite build",
+    "test": "run-s test:backend test:frontend",
+    "test:frontend": "vitest run",
+    "test:backend": "mo-test",
+    "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx,css,scss}\" \"backend/**/*.mo\"",
+    "sources": "mops sources",
+    "postinstall": "mops install"
   },
   "dependencies": {
-    "@dfinity/agent": "^0.18.1",
-    "@dfinity/candid": "^0.18.1",
-    "@dfinity/principal": "^0.18.1"
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0"
   },
   "devDependencies": {
-    "assert": "2.0.0",
-    "buffer": "6.0.3",
-    "copy-webpack-plugin": "^11.0.0",
-    "dotenv": "^16.0.3",
-    "events": "3.3.0",
-    "html-webpack-plugin": "5.5.0",
-    "process": "0.11.10",
-    "stream-browserify": "3.0.0",
-    "terser-webpack-plugin": "^5.3.3",
-    "util": "0.12.4",
-    "webpack": "^5.73.0",
-    "webpack-cli": "^4.10.0",
-    "webpack-dev-server": "^4.8.1"
-  },
-  "engines": {
-    "node": "^12 || ^14 || ^16 || ^18"
-  },
-  "browserslist": [
-    "last 2 chrome version",
-    "last 2 firefox version",
-    "last 2 safari version",
-    "last 2 edge version"
-  ]
+    "@dfinity/agent": "^0.18.1",
+    "@dfinity/candid": "^0.18.1",
+    "@dfinity/principal": "^0.18.1",
+    "@testing-library/jest-dom": "^5.16.5",
+    "@testing-library/react": "^14.0.0",
+    "@types/react": "^18.2.14",
+    "@types/react-dom": "^18.2.6",
+    "@vitejs/plugin-react": "^4.0.1",
+    "cross-fetch": "^3.1.6",
+    "dotenv": "^16.3.1",
+    "ic-mops": "^0.17.2",
+    "jsdom": "^22.1.0",
+    "mo-dev": "^0.11.2",
+    "npm-run-all": "^4.1.5",
+    "prettier": "^2.8.8",
+    "prettier-plugin-motoko": "^0.5.3",
+    "sass": "^1.63.6",
+    "typescript": "^5.1.3",
+    "vite": "^4.3.9",
+    "vite-plugin-environment": "^1.1.3",
+    "vitest": "^0.32.2",
+    "vite-plugin-wasm": "^3.2.2",
+    "vite-plugin-top-level-await": "^1.3.1",
+    "ic-vetkd-utils": "file:ic-vetkd-utils-0.1.0.tgz"
+  }
 }

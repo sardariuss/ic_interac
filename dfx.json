@@ -9,23 +9,15 @@
       "type": "motoko"
     },
     "frontend": {
-      "dependencies": [
-        "interac"
-      ],
-      "frontend": {
-        "entrypoint": "src/frontend/src/index.html"
-      },
-      "source": [
-        "src/frontend/assets",
-        "dist/frontend/"
-      ],
-      "type": "assets"
+      "dependencies": ["interac"],
+      "type": "assets",
+      "source": ["dist/"]
     }
   },
   "defaults": {
     "build": {
       "args": "",
-      "packtool": "mops sources"
+      "packtool": "npm run --silent sources"
     }
   },
   "output_env_file": ".env",
