@@ -14,8 +14,13 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "react-jsx",
+    "preserveValueImports": false,
+    "importsNotUsedAsValues": "remove",
+    "verbatimModuleSyntax": true,
     "types": ["vite/client", "@testing-library/jest-dom"]
   },
-  "include": ["src/frontend"]
+  "extends": "@tsconfig/svelte/tsconfig.json",
+	
+  "include": ["src/frontend"],
+  "exclude": ["node_modules/*", "__sapper__/*", "public/*"],
 }

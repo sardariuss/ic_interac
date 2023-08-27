@@ -18,12 +18,23 @@
   },
   "dependencies": {
     "react": "^18.2.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "@testing-library/svelte": "^3.0.3",
+    "@tsconfig/svelte": "^2.0.0",
+    "svelte": "^3.59.1",
+    "svelte-check": "^3.3.2",
+    "svelte-jester": "^2.3.2",
+    "svelte-preprocess": "^5.0.3",
+    "svelte-icons": "^2.1.0",
+    "svelte-router-spa": "^6.0.3",
+    "@sveltejs/vite-plugin-svelte": "^2.4.5",
+    "typewriter-editor": "^0.6.45"
   },
   "devDependencies": {
-    "@dfinity/agent": "^0.18.1",
-    "@dfinity/candid": "^0.18.1",
-    "@dfinity/principal": "^0.18.1",
+    "@dfinity/agent": "^0.19.2",
+    "@dfinity/candid": "^0.19.2",
+    "@dfinity/principal": "^0.19.2",
+    "@dfinity/auth-client": "^0.19.2",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^14.0.0",
     "@types/react": "^18.2.14",
